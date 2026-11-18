@@ -1,0 +1,10 @@
+# Samsung Wear OS Factory Assembly & Diagnostic Stubs
+# Used only during manufacturing assembly; zero function for normal users
+com.sec.android.app.hwmoduletest
+com.sec.android.app.wlantest
+com.sec.android.app.felicatest
+com.sec.android.app.factorykeystring
+com.sec.facatfunction
+com.sem.factoryapp
+com.sec.hiddenmenu
+com.samsung.android.providers.factory

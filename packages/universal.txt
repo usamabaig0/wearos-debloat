@@ -1,0 +1,7 @@
+# Universal Wear OS Packages (Safe across any Wear OS device)
+# Retail demo loop (store display leftover)
+com.google.android.apps.wearable.retailattractloop
+# Google Assistant (voice hotword daemon; remove if not used)
+com.google.android.wearable.assistant
+# TalkBack screen reader (accessibility service for visually impaired; heavy touch interception)
+com.google.android.marvin.talkback

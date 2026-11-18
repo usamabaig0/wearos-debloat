@@ -1,0 +1,91 @@
+# Instructions for AI Coding Agents (Claude Code, Cursor, Codex, Gemini, Hermes, Aider)
+# Copy and paste the entire block below into your AI agent's chat or CLI session.
+
+============================= COPY BELOW THIS LINE =============================
+
+You are an Android and Wear OS optimization specialist. Your job is to connect to my Wear OS smartwatch over ADB, audit installed packages, disable safe bloatware, and apply system battery and Wi-Fi tweaks.
+
+Here is my watch connection info:
+WATCH_ADDRESS="<WATCH_IP>:<PORT>"
+# Example: WATCH_ADDRESS="<WATCH_IP>:<PORT>"
+
+Follow these instructions in order:
+
+1. Connect and verify hardware
+   - Run `adb devices`. If the watch is not connected, run `adb connect "$WATCH_ADDRESS"`.
+   - Verify connection succeeded before proceeding. If unauthorized, prompt me to tap "Allow" on the watch face.
+   - Run:
+     `adb shell getprop ro.product.manufacturer`
+     `adb shell getprop ro.product.model`
+     `adb shell getprop ro.build.version.release`
+   - Record initial free RAM with:
+     `adb shell cat /proc/meminfo | grep -iE 'MemFree|MemAvailable'`
+
+2. Check installed packages
+   - Run `adb shell pm list packages` to obtain the full inventory of packages installed on the device.
+   - Compare the inventory against these target lists:
+
+   [Universal Wear OS bloat]
+   - com.google.android.apps.wearable.retailattractloop (Store demo playback leftover)
+   - com.google.android.marvin.talkback (Screen reader accessibility daemon; remove only if accessibility speech is not needed)
+
+   [Samsung Galaxy Watch telemetry and tracking (Only apply if manufacturer is Samsung)]
+   - com.sec.android.diagmonagent (Diagnostic monitoring daemon)
+   - com.samsung.android.dqagent (Diagnostic quality agent)
+   - com.samsung.android.watch.runestone.app (Samsung analytics engine)
+   - com.samsung.sree.classic (Global Goals promotional notifications)
+   - com.sds.emm.cloud.knox.samsung (Enterprise MDM client)
+   - android.autoinstalls.config.samsung (Auto-install carrier config)
+   - com.sec.location.nfwlocationprivacy (Location test stub)
+   - com.sec.nfc.felicalocktest (NFC test stub)
+
+   [Samsung Galaxy Watch assembly test stubs (Only apply if manufacturer is Samsung)]
+   - com.sec.android.app.hwmoduletest
+   - com.sec.android.app.wlantest
+   - com.sec.android.app.felicatest
+   - com.sec.android.app.factorykeystring
+   - com.sec.facatfunction
+   - com.sem.factoryapp
+   - com.sec.hiddenmenu
+   - com.samsung.android.providers.factory
+
+   [Voice assistants (Confirm with user or remove if user requested assistant removal)]
+   - com.samsung.android.bixby.agent
+   - com.samsung.android.bixby.wakeup
+   - com.samsung.android.intellivoiceservice
+   - com.google.android.wearable.assistant
+
+3. Unload packages safely
+   For every matching installed package found on the watch:
+   - Run `adb shell pm disable-user --user 0 <package>`
+   - Run `adb shell pm uninstall -k --user 0 <package>`
+   Do NOT delete system binaries from `/system/` or use root. The `-k` flag preserves the system image so Knox stays 0x0 and packages can be re-enabled at any time.
+
+4. Apply system settings tweaks
+   - Turn off background Wi-Fi scanning (prevents Wi-Fi radio from waking up when Wi-Fi is toggled off):
+     `adb shell settings put global wifi_scan_always_enabled 0`
+   - Enable 80% battery charging protection:
+     `adb shell settings put global protect_battery 1`
+     `adb shell settings put global battery_protection_threshold 80`
+     `adb shell settings put system protect_battery 1`
+     `adb shell settings put system battery_protection_threshold 80`
+   - Set animation speeds to 0.5x for faster UI navigation:
+     `adb shell settings put global window_animation_scale 0.5`
+     `adb shell settings put global transition_animation_scale 0.5`
+     `adb shell settings put global animator_duration_scale 0.5`
+
+5. Start Shizuku daemon (if present)
+   - Check if `moe.shizuku.privileged.api` is installed.
+   - If installed, run:
+     `adb shell 'p=$(pm path moe.shizuku.privileged.api | cut -d: -f2 | sed "s/base.apk//"); ${p}lib/arm/libshizuku.so'`
+
+6. Verification and final report
+   - Query free RAM again with `adb shell cat /proc/meminfo | grep -iE 'MemFree|MemAvailable'`
+   - Check Knox status flag: `adb shell getprop ro.boot.warranty_bit` (should be 0)
+   - Print a clean summary table listing:
+     * Detected watch model and OS
+     * Number of packages removed
+     * Before vs after available memory
+     * Restore command syntax (`adb shell pm install-existing <package>`)
+
+============================= COPY ABOVE THIS LINE =============================

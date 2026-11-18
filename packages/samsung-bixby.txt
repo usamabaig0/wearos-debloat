@@ -1,0 +1,4 @@
+# Samsung Bixby Voice Assistant & Wakeup Listeners
+com.samsung.android.bixby.agent
+com.samsung.android.bixby.wakeup
+com.samsung.android.intellivoiceservice

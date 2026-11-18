@@ -1,0 +1,10 @@
+# Samsung Wear OS Telemetry, Analytics & Background Trackers
+# (Galaxy Watch 4 / 5 / 6 / 7 / Ultra running One UI Watch)
+com.sec.android.diagmonagent
+com.samsung.android.dqagent
+com.samsung.android.watch.runestone.app
+com.samsung.sree.classic
+com.sds.emm.cloud.knox.samsung
+android.autoinstalls.config.samsung
+com.sec.location.nfwlocationprivacy
+com.sec.nfc.felicalocktest

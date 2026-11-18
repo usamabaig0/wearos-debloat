@@ -1,0 +1,5 @@
+# Google Pixel Watch Optional Bloat & Unused Services
+com.google.android.apps.wearable.retailattractloop
+com.google.android.wearable.assistant
+com.google.android.marvin.talkback
+com.google.android.apps.fitness
